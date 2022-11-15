@@ -1,6 +1,9 @@
 import requests
 from player import Player
 
+def point_order(player):
+    return player.goals+player.assists
+
 def main():
     url = "https://studies.cs.helsinki.fi/nhlstats/2021-22/players"
     response = requests.get(url).json()
@@ -19,9 +22,10 @@ def main():
 
         players.append(player)
 
-    print("Players from FIN 2021-01-04 19:15:32.858661\n")
+    fin_players = [p for p in players if p.nationality == "FIN"]
+    print("Players from FIN 2021-2022\n")
 
-    for player in [p for p in players if p.nationality == "FIN"]:
+    for player in sorted(fin_players, key=point_order, reverse=True):
         print(player)
 
 if __name__ == "__main__":
