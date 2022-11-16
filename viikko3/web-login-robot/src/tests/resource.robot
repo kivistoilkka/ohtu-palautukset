@@ -33,3 +33,11 @@ Register Page Should Be Open
 
 Welcome Page Should Be Open
     Title Should Be  Welcome to Ohtu Application!
+
+Set Username
+    [Arguments]  ${username}
+    Input Text  username  ${username}
+
+Set Password
+    [Arguments]  ${password}
+    Input Password  password  ${password}
