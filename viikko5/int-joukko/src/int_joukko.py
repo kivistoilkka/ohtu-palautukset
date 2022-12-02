@@ -38,7 +38,7 @@ class IntJoukko:
 
     def _luo_uusi_taulukko(self):
         uusi_taulukko = [0] * (self.__alkioiden_lkm + self.kasvatuskoko)
-        self._kopioi_taulukko(self.__taulukko, uusi_taulukko)
+        self._kopioi_taulukon_sisalto(self.__taulukko, uusi_taulukko)
         self.__taulukko = uusi_taulukko
 
     def poista(self, luku):
@@ -59,7 +59,7 @@ class IntJoukko:
         for i in range(aloituskohta, self.__alkioiden_lkm - 1):
             self.__taulukko[i] = self.__taulukko[i + 1]
 
-    def _kopioi_taulukko(self, vanha_taulukko, uusi_taulukko):
+    def _kopioi_taulukon_sisalto(self, vanha_taulukko, uusi_taulukko):
         for i in range(0, len(vanha_taulukko)):
             uusi_taulukko[i] = vanha_taulukko[i]
 
@@ -68,10 +68,8 @@ class IntJoukko:
 
     def to_int_list(self):
         taulu = [0] * self.__alkioiden_lkm
-
         for i in range(0, len(taulu)):
             taulu[i] = self.__taulukko[i]
-
         return taulu
 
     @staticmethod
