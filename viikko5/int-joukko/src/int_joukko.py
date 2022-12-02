@@ -22,14 +22,8 @@ class IntJoukko:
         return True
 
     def lisaa(self, lisattava):
-        if self.__alkioiden_lkm == 0:
-            self.__taulukko[0] = lisattava
-            self.__alkioiden_lkm += 1
-            return True
-
-        if self.kuuluu(lisattava):
+        if self.__alkioiden_lkm > 0 and self.kuuluu(lisattava):
             return False
-
         if self.__alkioiden_lkm >= len(self.__taulukko):
             self._luo_uusi_taulukko()
         self.__taulukko[self.__alkioiden_lkm] = lisattava
