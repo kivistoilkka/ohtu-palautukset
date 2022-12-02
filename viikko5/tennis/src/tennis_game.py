@@ -19,31 +19,29 @@ class TennisGame:
         if score == 3:
             return "Forty"
 
+    def _check_advantage_or_winner(self):
+        difference = abs(self.player1['score'] - self.player2['score'])
+        leader = max(self.player1, self.player2, key=lambda p: p['score'])
+        if difference >= 2:
+            return f"Win for {leader['name']}"
+        return f"Advantage {leader['name']}"
+
     def get_score(self):
         if self.player1['score'] == self.player2['score']:
             if self.player1['score'] < 4:
                 return self._score_name(self.player1['score'])+"-All"
-            else:
-                return "Deuce"
-        elif self.player1['score'] >= 4 or self.player2['score'] >= 4:
-            minus_result = self.player1['score'] - self.player2['score']
+            return "Deuce"
 
-            if minus_result == 1:
-                return f"Advantage {self.player1['name']}"
-            elif minus_result == -1:
-                return f"Advantage {self.player2['name']}"
-            elif minus_result >= 2:
-                return f"Win for {self.player1['name']}"
+        if max(self.player1['score'], self.player2['score']) >= 4:
+            return self._check_advantage_or_winner()
+
+        score = ""
+        temp_score = 0
+        for i in range(0, 2):
+            if i == 0:
+                temp_score = self.player1['score']
             else:
-                return f"Win for {self.player2['name']}"
-        else:
-            score = ""
-            temp_score = 0
-            for i in range(0, 2):
-                if i == 0:
-                    temp_score = self.player1['score']
-                else:
-                    score = score + "-"
-                    temp_score = self.player2['score']
-                score += self._score_name(temp_score)
-            return score
+                score = score + "-"
+                temp_score = self.player2['score']
+            score += self._score_name(temp_score)
+        return score
