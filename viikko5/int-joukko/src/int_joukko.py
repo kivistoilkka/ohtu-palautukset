@@ -17,10 +17,9 @@ class IntJoukko:
         self.__alkioiden_lkm = 0
 
     def kuuluu(self, luku):
-        for i in range(0, self.__alkioiden_lkm):
-            if luku == self.__taulukko[i]:
-                return True
-        return False
+        if self._hae_sijainti(luku) < 0:
+            return False
+        return True
 
     def lisaa(self, lisattava):
         if self.__alkioiden_lkm == 0:
@@ -30,40 +29,38 @@ class IntJoukko:
 
         if self.kuuluu(lisattava):
             return False
-            
+
         if self.__alkioiden_lkm >= len(self.__taulukko):
-            self.luo_uusi_taulukko()
+            self._luo_uusi_taulukko()
         self.__taulukko[self.__alkioiden_lkm] = lisattava
         self.__alkioiden_lkm += 1
         return True
 
-    def luo_uusi_taulukko(self):
+    def _luo_uusi_taulukko(self):
         uusi_taulukko = [0] * (self.__alkioiden_lkm + self.kasvatuskoko)
-        self.kopioi_taulukko(self.__taulukko, uusi_taulukko)
+        self._kopioi_taulukko(self.__taulukko, uusi_taulukko)
         self.__taulukko = uusi_taulukko
 
-    def poista(self, n):
-        kohta = -1
-        apu = 0
+    def poista(self, luku):
+        kohta = self._hae_sijainti(luku)
+        if kohta < 0:
+            return False
+        self.__taulukko[kohta] = 0
+        self._siirra_lukuja_vasemmalle(kohta)
+        self.__alkioiden_lkm = self.__alkioiden_lkm - 1
+        return True
 
+    def _hae_sijainti(self, luku):
         for i in range(0, self.__alkioiden_lkm):
-            if n == self.__taulukko[i]:
-                kohta = i  # siis luku löytyy tuosta kohdasta :D
-                self.__taulukko[kohta] = 0
-                break
+            if luku == self.__taulukko[i]:
+                return i
+        return -1
 
-        if kohta != -1:
-            for j in range(kohta, self.__alkioiden_lkm - 1):
-                apu = self.__taulukko[j]
-                self.__taulukko[j] = self.__taulukko[j + 1]
-                self.__taulukko[j + 1] = apu
+    def _siirra_lukuja_vasemmalle(self, aloituskohta):
+        for i in range(aloituskohta, self.__alkioiden_lkm - 1):
+            self.__taulukko[i] = self.__taulukko[i + 1]
 
-            self.__alkioiden_lkm = self.__alkioiden_lkm - 1
-            return True
-
-        return False
-
-    def kopioi_taulukko(self, vanha_taulukko, uusi_taulukko):
+    def _kopioi_taulukko(self, vanha_taulukko, uusi_taulukko):
         for i in range(0, len(vanha_taulukko)):
             uusi_taulukko[i] = vanha_taulukko[i]
 
