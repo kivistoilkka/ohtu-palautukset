@@ -18,7 +18,7 @@ class Kayttoliittyma:
             Komento.SUMMA: Summa(self._sovellus, self._lue_syote),
             Komento.EROTUS: Erotus(self._sovellus, self._lue_syote),
             Komento.NOLLAUS: Nollaus(self._sovellus, self._lue_syote),
-            Komento.KUMOA: Kumoa(self._sovellus, self._lue_syote)
+            Komento.KUMOA: None
         }
 
     def kaynnista(self):
@@ -69,7 +69,12 @@ class Kayttoliittyma:
 
     def _suorita_komento(self, komento):
         komento_olio = self._komennot[komento]
-        komento_olio.suorita()
+        if komento == Komento.KUMOA and self._komennot[Komento.KUMOA] is not None:
+            komento_olio.kumoa()
+        else:
+            komento_olio.suorita()
+
+        self._komennot[Komento.KUMOA] = komento_olio
         self._kumoa_painike["state"] = constants.NORMAL
 
         if self._sovellus.tulos == 0:
@@ -84,30 +89,37 @@ class Summa:
     def __init__(self, sovellus, syotteenlukija):
         self.sovellus = sovellus
         self.syotteenlukija = syotteenlukija
+        self.edellinen_tulos = self.sovellus.tulos
 
     def suorita(self):
+        self.edellinen_tulos = self.sovellus.tulos
         self.sovellus.plus(self.syotteenlukija())
+
+    def kumoa(self):
+        self.sovellus.aseta_arvo(self.edellinen_tulos)
 
 class Erotus:
     def __init__(self, sovellus, syotteenlukija):
         self.sovellus = sovellus
         self.syotteenlukija = syotteenlukija
+        self.edellinen_tulos = self.sovellus.tulos
 
     def suorita(self):
+        self.edellinen_tulos = self.sovellus.tulos
         self.sovellus.miinus(self.syotteenlukija())
+
+    def kumoa(self):
+        self.sovellus.aseta_arvo(self.edellinen_tulos)
 
 class Nollaus:
     def __init__(self, sovellus, syotteenlukija):
         self.sovellus = sovellus
         self.syotteenlukija = syotteenlukija
+        self.edellinen_tulos = self.sovellus.tulos
 
     def suorita(self):
+        self.edellinen_tulos = self.sovellus.tulos
         self.sovellus.nollaa()
 
-class Kumoa:
-    def __init__(self, sovellus, syotteenlukija):
-        self.sovellus = sovellus
-        self.syotteenlukija = syotteenlukija
-
-    def suorita(self):
-        pass
+    def kumoa(self):
+        self.sovellus.aseta_arvo(self.edellinen_tulos)
