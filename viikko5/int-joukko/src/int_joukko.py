@@ -45,7 +45,6 @@ class IntJoukko:
         kohta = self._hae_sijainti(luku)
         if kohta < 0:
             return False
-        self.__taulukko[kohta] = 0
         self._siirra_lukuja_vasemmalle(kohta)
         self.__alkioiden_lkm = self.__alkioiden_lkm - 1
         return True
