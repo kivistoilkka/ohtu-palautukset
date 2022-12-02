@@ -9,47 +9,41 @@ class TennisGame:
         elif player_name == self.player2['name']:
             self.player2['score'] += 1
 
-    def get_score(self):
-        score = ""
-        temp_score = 0
+    def _score_name(self, score):
+        if score == 0:
+            return "Love"
+        if score == 1:
+            return "Fifteen"
+        if score == 2:
+            return "Thirty"
+        if score == 3:
+            return "Forty"
 
+    def get_score(self):
         if self.player1['score'] == self.player2['score']:
-            if self.player1['score'] == 0:
-                score = "Love-All"
-            elif self.player1['score'] == 1:
-                score = "Fifteen-All"
-            elif self.player1['score'] == 2:
-                score = "Thirty-All"
-            elif self.player1['score'] == 3:
-                score = "Forty-All"
+            if self.player1['score'] < 4:
+                return self._score_name(self.player1['score'])+"-All"
             else:
-                score = "Deuce"
+                return "Deuce"
         elif self.player1['score'] >= 4 or self.player2['score'] >= 4:
             minus_result = self.player1['score'] - self.player2['score']
 
             if minus_result == 1:
-                score = f"Advantage {self.player1['name']}"
+                return f"Advantage {self.player1['name']}"
             elif minus_result == -1:
-                score = f"Advantage {self.player2['name']}"
+                return f"Advantage {self.player2['name']}"
             elif minus_result >= 2:
-                score = f"Win for {self.player1['name']}"
+                return f"Win for {self.player1['name']}"
             else:
-                score = f"Win for {self.player2['name']}"
+                return f"Win for {self.player2['name']}"
         else:
-            for i in range(1, 3):
-                if i == 1:
+            score = ""
+            temp_score = 0
+            for i in range(0, 2):
+                if i == 0:
                     temp_score = self.player1['score']
                 else:
                     score = score + "-"
                     temp_score = self.player2['score']
-
-                if temp_score == 0:
-                    score = score + "Love"
-                elif temp_score == 1:
-                    score = score + "Fifteen"
-                elif temp_score == 2:
-                    score = score + "Thirty"
-                elif temp_score == 3:
-                    score = score + "Forty"
-
-        return score
+                score += self._score_name(temp_score)
+            return score
