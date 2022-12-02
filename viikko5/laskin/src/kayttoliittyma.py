@@ -14,6 +14,13 @@ class Kayttoliittyma:
         self._sovellus = sovellus
         self._root = root
 
+        self._komennot = {
+            Komento.SUMMA: Summa(self._sovellus, self._lue_syote),
+            Komento.EROTUS: Erotus(self._sovellus, self._lue_syote),
+            Komento.NOLLAUS: Nollaus(self._sovellus, self._lue_syote),
+            Komento.KUMOA: Kumoa(self._sovellus, self._lue_syote)
+        }
+
     def kaynnista(self):
         self._tulos_var = StringVar()
         self._tulos_var.set(self._sovellus.tulos)
@@ -54,23 +61,15 @@ class Kayttoliittyma:
         self._nollaus_painike.grid(row=2, column=2)
         self._kumoa_painike.grid(row=2, column=3)
 
-    def _suorita_komento(self, komento):
-        arvo = 0
-
+    def _lue_syote(self):
         try:
-            arvo = int(self._syote_kentta.get())
+            return int(self._syote_kentta.get())
         except Exception:
-            pass
+            return 0
 
-        if komento == Komento.SUMMA:
-            self._sovellus.plus(arvo)
-        elif komento == Komento.EROTUS:
-            self._sovellus.miinus(arvo)
-        elif komento == Komento.NOLLAUS:
-            self._sovellus.nollaa()
-        elif komento == Komento.KUMOA:
-            pass
-
+    def _suorita_komento(self, komento):
+        komento_olio = self._komennot[komento]
+        komento_olio.suorita()
         self._kumoa_painike["state"] = constants.NORMAL
 
         if self._sovellus.tulos == 0:
@@ -80,3 +79,35 @@ class Kayttoliittyma:
 
         self._syote_kentta.delete(0, constants.END)
         self._tulos_var.set(self._sovellus.tulos)
+
+class Summa:
+    def __init__(self, sovellus, syotteenlukija):
+        self.sovellus = sovellus
+        self.syotteenlukija = syotteenlukija
+
+    def suorita(self):
+        self.sovellus.plus(self.syotteenlukija())
+
+class Erotus:
+    def __init__(self, sovellus, syotteenlukija):
+        self.sovellus = sovellus
+        self.syotteenlukija = syotteenlukija
+
+    def suorita(self):
+        self.sovellus.miinus(self.syotteenlukija())
+
+class Nollaus:
+    def __init__(self, sovellus, syotteenlukija):
+        self.sovellus = sovellus
+        self.syotteenlukija = syotteenlukija
+
+    def suorita(self):
+        self.sovellus.nollaa()
+
+class Kumoa:
+    def __init__(self, sovellus, syotteenlukija):
+        self.sovellus = sovellus
+        self.syotteenlukija = syotteenlukija
+
+    def suorita(self):
+        pass
