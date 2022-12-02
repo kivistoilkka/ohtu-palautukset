@@ -74,44 +74,38 @@ class IntJoukko:
 
     @staticmethod
     def yhdiste(a, b):
-        x = IntJoukko()
+        yhdistejoukko = IntJoukko()
         a_taulu = a.to_int_list()
         b_taulu = b.to_int_list()
-
         for i in range(0, len(a_taulu)):
-            x.lisaa(a_taulu[i])
-
+            yhdistejoukko.lisaa(a_taulu[i])
         for i in range(0, len(b_taulu)):
-            x.lisaa(b_taulu[i])
-
-        return x
+            yhdistejoukko.lisaa(b_taulu[i])
+        return yhdistejoukko
 
     @staticmethod
     def leikkaus(a, b):
-        y = IntJoukko()
+        leikkausjoukko = IntJoukko()
         a_taulu = a.to_int_list()
         b_taulu = b.to_int_list()
-
         for i in range(0, len(a_taulu)):
-            for j in range(0, len(b_taulu)):
-                if a_taulu[i] == b_taulu[j]:
-                    y.lisaa(b_taulu[j])
-
-        return y
+            if b.kuuluu(a_taulu[i]):
+                leikkausjoukko.lisaa(a_taulu[i])
+        for i in range(0, len(b_taulu)):
+            if a.kuuluu(b_taulu[i]):
+                leikkausjoukko.lisaa(b_taulu[i])
+        return leikkausjoukko
 
     @staticmethod
     def erotus(a, b):
-        z = IntJoukko()
+        erotusjoukko = IntJoukko()
         a_taulu = a.to_int_list()
         b_taulu = b.to_int_list()
-
         for i in range(0, len(a_taulu)):
-            z.lisaa(a_taulu[i])
-
+            erotusjoukko.lisaa(a_taulu[i])
         for i in range(0, len(b_taulu)):
-            z.poista(b_taulu[i])
-
-        return z
+            erotusjoukko.poista(b_taulu[i])
+        return erotusjoukko
 
     def __str__(self):
         if self.__alkioiden_lkm == 0:
