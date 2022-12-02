@@ -108,15 +108,10 @@ class IntJoukko:
         return erotusjoukko
 
     def __str__(self):
-        if self.__alkioiden_lkm == 0:
-            return "{}"
-        elif self.__alkioiden_lkm == 1:
-            return "{" + str(self.__taulukko[0]) + "}"
-        else:
-            tuotos = "{"
-            for i in range(0, self.__alkioiden_lkm - 1):
-                tuotos = tuotos + str(self.__taulukko[i])
-                tuotos = tuotos + ", "
-            tuotos = tuotos + str(self.__taulukko[self.__alkioiden_lkm - 1])
-            tuotos = tuotos + "}"
-            return tuotos
+        mjono = "{"
+        for i in range(0, self.__alkioiden_lkm):
+            mjono += str(self.__taulukko[i])
+            if i < self.__alkioiden_lkm - 1:
+                mjono += ", "
+        mjono += "}"
+        return mjono
