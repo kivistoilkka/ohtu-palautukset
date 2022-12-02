@@ -16,41 +16,31 @@ class IntJoukko:
         self.taulukko = [0] * self.kapasiteetti
         self.alkioiden_lkm = 0
 
-    def kuuluu(self, n):
-        on = 0
-
+    def kuuluu(self, luku):
         for i in range(0, self.alkioiden_lkm):
-            if n == self.taulukko[i]:
-                on = on + 1
+            if luku == self.taulukko[i]:
+                return True
+        return False
 
-        if on > 0:
+    def lisaa(self, lisattava):
+        if self.alkioiden_lkm == 0:
+            self.taulukko[0] = lisattava
+            self.alkioiden_lkm += 1
             return True
-        else:
+
+        if self.kuuluu(lisattava):
             return False
 
-    def lisaa(self, n):
-        ei_ole = 0
+        if self.alkioiden_lkm >= len(self.taulukko):
+            self.luo_uusi_taulukko()
+        self.taulukko[self.alkioiden_lkm] = lisattava
+        self.alkioiden_lkm += 1
+        return True
 
-        if self.alkioiden_lkm == 0:
-            self.taulukko[0] = n
-            self.alkioiden_lkm = self.alkioiden_lkm + 1
-            return True
-        else:
-            pass
-
-        if not self.kuuluu(n):
-            self.taulukko[self.alkioiden_lkm] = n
-            self.alkioiden_lkm = self.alkioiden_lkm + 1
-
-            if self.alkioiden_lkm % len(self.taulukko) == 0:
-                taulukko_old = self.taulukko
-                self.kopioi_taulukko(self.taulukko, taulukko_old)
-                self.taulukko = [0] * (self.alkioiden_lkm + self.kasvatuskoko)
-                self.kopioi_taulukko(taulukko_old, self.taulukko)
-
-            return True
-
-        return False
+    def luo_uusi_taulukko(self):
+        uusi_taulukko = [0] * (self.alkioiden_lkm + self.kasvatuskoko)
+        self.kopioi_taulukko(self.taulukko, uusi_taulukko)
+        self.taulukko = uusi_taulukko
 
     def poista(self, n):
         kohta = -1
@@ -73,9 +63,9 @@ class IntJoukko:
 
         return False
 
-    def kopioi_taulukko(self, a, b):
-        for i in range(0, len(a)):
-            b[i] = a[i]
+    def kopioi_taulukko(self, vanha_taulukko, uusi_taulukko):
+        for i in range(0, len(vanha_taulukko)):
+            uusi_taulukko[i] = vanha_taulukko[i]
 
     def mahtavuus(self):
         return self.alkioiden_lkm
