@@ -130,6 +130,25 @@ def querybuilder_part2():
     for player in stats.matches(matcher):
         print(player)
 
+    print("---")
+    matcher = (
+        query
+            .oneOf(
+                query.playsIn("PHI")
+                    .hasAtLeast(10, "assists")
+                    .hasFewerThan(5, "goals")
+                    .build(),
+                query.playsIn("EDM")
+                    .hasAtLeast(50, "points")
+                    .build(),
+                query.playsIn("BOS")
+                    .hasAtLeast(70, "points")
+                    .build()
+            )
+            .build()
+        )
+    for player in stats.matches(matcher):
+        print(player)
 
 
 def main():

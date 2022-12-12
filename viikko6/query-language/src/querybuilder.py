@@ -28,12 +28,9 @@ class QueryBuilder:
             )
         )
 
-    def oneOf(self, query1, query2):
+    def oneOf(self, *queries):
         return QueryBuilder(
-            And(
-                self.query_object,
-                Or(query1, query2)
-            )
+            Or(*queries)
         )
 
     def build(self):
