@@ -1,8 +1,9 @@
 from statistics import Statistics
 from player_reader import PlayerReader
 from matchers import And, HasAtLeast, PlaysIn, Not, HasFewerThan, All, Or
+from querybuilder import QueryBuilder
 
-def main():
+def querylanguage_part1():
     url = "https://studies.cs.helsinki.fi/nhlstats/2021-22/players.txt"
     reader = PlayerReader(url)
     stats = Statistics(reader)
@@ -36,7 +37,11 @@ def main():
     filtered_with_all = stats.matches(All())
     print(len(filtered_with_all))
 
-    print("---")
+def querylanguage_part2():
+    url = "https://studies.cs.helsinki.fi/nhlstats/2021-22/players.txt"
+    reader = PlayerReader(url)
+    stats = Statistics(reader)
+
     matcher = Or(
         HasAtLeast(45, "goals"),
         HasAtLeast(70, "assists")
@@ -55,6 +60,43 @@ def main():
     )
     for player in stats.matches(matcher):
         print(player)
+
+def querybuilder_part1():
+    url = "https://studies.cs.helsinki.fi//nhlstats/2021-22/players.txt"
+    reader = PlayerReader(url)
+    stats = Statistics(reader)
+
+    query = QueryBuilder()
+
+    matcher = query.build()
+    for player in stats.matches(matcher):
+        print(player)
+
+    print("---")
+    matcher = query.playsIn("NYR").build()
+    for player in stats.matches(matcher):
+        print(player)
+
+    print("---")
+    matcher = (
+        query
+        .playsIn("NYR")
+        .hasAtLeast(10, "goals")
+        .hasFewerThan(20, "goals")
+        .build()
+    )
+    for player in stats.matches(matcher):
+        print(player)
+
+
+def main():
+    # querylanguage_part1()
+
+    # print("***")
+    # querylanguage_part2()
+
+    # print("***")
+    querybuilder_part1()
 
 
 if __name__ == "__main__":
