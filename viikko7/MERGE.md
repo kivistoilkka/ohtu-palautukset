@@ -1,0 +1,1 @@
+[Tekemäni pull requestin mergeäminen](https://github.com/kivistoilkka/ohtu-miniprojekti/pull/6)
