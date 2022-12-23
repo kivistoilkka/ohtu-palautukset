@@ -1,4 +1,3 @@
-from tuomari import Tuomari
 from tekoaly_parannettu import TekoalyParannettu
 from kivi_paperi_sakset import KiviPaperiSakset
 
